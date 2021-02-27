@@ -57,7 +57,26 @@ public class Controlador {
 		// depois preciso devolver todos para o espaço de tupla
 //		List lista = new ArrayList();
 //		String[] strings = (String[]) lista.toArray (new String[lista.size()]);
-		return new String[] {"Maria", "João", "Xuxa", "Túlio Maravilha"};
+//		ArrayList<TuplaUsuario> usuariosExistentes= new ArrayList<TuplaUsuario>();
+//		ArrayList<String> nomes = new ArrayList<String>();
+//		boolean terminou = false;
+//		while (!terminou) {
+//			TuplaUsuario usuario = LerUsuariosDoEspaco();
+//			if (usuario != null) {
+//				usuariosExistentes.add(usuario);
+//				nomes.add(usuario.nome);
+//			}else {
+//				terminou = true;
+//			}
+//		}
+//		
+//		for (TuplaUsuario usuarioParaAdicionar : usuariosExistentes) {
+//			GravarUsuarioNoEspaco(usuarioParaAdicionar.nome);
+//		}
+//		String[] nomesParaRetornar = new String[nomes.size()];
+//		nomes.toArray(nomesParaRetornar);
+//		return nomesParaRetornar;
+		return new String[] {"maria", "xuxa"};
 	}
 	
 	public void GravarUsuarioNoEspaco(String nomeUsuario) throws RemoteException, UnusableEntryException, TransactionException, InterruptedException {
@@ -66,6 +85,17 @@ public class Controlador {
 	    this.conexaoComOEspaco.write(modelo, null, Lease.FOREVER);
         System.out.println("Usuário gravado no espaço com sucesso!");
 	}
+	
+    public TuplaUsuario LerUsuariosDoEspaco() throws TransactionException, UnusableEntryException, RemoteException, InterruptedException {
+		TuplaUsuario modelo = new TuplaUsuario();
+	              
+		TuplaUsuario usuario = (TuplaUsuario) this.conexaoComOEspaco.take(modelo, null, 1000);
+
+        if (usuario != null) {
+            return usuario;
+        }
+		return usuario;
+    }
 	
 	public void GravarMensagemNoEspaco(String remetente, String destinatario, String conteudo) throws RemoteException, UnusableEntryException, TransactionException, InterruptedException {
 		TuplaMensagem modelo = new TuplaMensagem();
@@ -77,5 +107,20 @@ public class Controlador {
 	    this.conexaoComOEspaco.write(modelo, null, Lease.FOREVER);
 	    System.out.println(remetente + " > " + destinatario + " > " + conteudo);
         System.out.println("Mensagem gravada no espaço com sucesso!");
-	}	
+	}
+	
+    public TuplaMensagem LerMensagemDoEspaco(String NomeUsuario) throws TransactionException, UnusableEntryException, RemoteException, InterruptedException {
+		TuplaMensagem modelo = new TuplaMensagem();
+	    
+	    modelo.destinatario = NomeUsuario;
+	           
+
+        TuplaMensagem mensagem = (TuplaMensagem) this.conexaoComOEspaco.take(modelo, null, 10000);
+
+        if (mensagem != null) {
+            System.out.println("\r\n" + mensagem.remetente + ": " + mensagem.conteudo + "\r\n");
+            return mensagem;
+        }
+		return mensagem;
+    }
 }

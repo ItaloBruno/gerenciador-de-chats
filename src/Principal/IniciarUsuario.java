@@ -14,6 +14,7 @@ import java.awt.HeadlessException;
 import java.rmi.RemoteException;
 
 import ControladorTupla.Controlador;
+import Tuplas.TuplaMensagem;
 
 
 public class IniciarUsuario {
@@ -40,11 +41,52 @@ public class IniciarUsuario {
 					controlador.GravarUsuarioNoEspaco(nome);
 					TelaUsuario window = new TelaUsuario(nome, controlador);
 					window.frameTelaUsuario.setVisible(true);
+					ReceberMensagem(controlador, window, nome);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
+			
+		    private void ReceberMensagem(Controlador controlador, TelaUsuario tela, String nome){
+		        new Thread(() -> {
+		            System.out.println("Rodando a thread de recepção de mensagens");
+		            while (true){
+		                try {
+		                	TuplaMensagem mensagemRecebida = controlador.LerMensagemDoEspaco(nome);
+		                	if (mensagemRecebida != null) {
+		                		tela.AtualizarChat(mensagemRecebida);
+		                	}
+		                } catch (TransactionException e) {
+		                    e.printStackTrace();
+		                } catch (UnusableEntryException e) {
+		                    e.printStackTrace();
+		                } catch (RemoteException e) {
+		                    e.printStackTrace();
+		                } catch (InterruptedException e) {
+		                    e.printStackTrace();
+		                }
+		            }
+		        }).start();
 
+//		    private void AtualizarListaDeUsuario(Controlador controlador, TelaUsuario tela){
+//		        new Thread(() -> {
+//		            System.out.println("Rodando a thread de recepção de mensagens");
+//		            while (true){
+//		                try {
+//		                	
+//		                } catch (TransactionException e) {
+//		                    e.printStackTrace();
+//		                } catch (UnusableEntryException e) {
+//		                    e.printStackTrace();
+//		                } catch (RemoteException e) {
+//		                    e.printStackTrace();
+//		                } catch (InterruptedException e) {
+//		                    e.printStackTrace();
+//		                }
+//		            }
+//		        }).start();
+		    }
+		    
 			private String iniciarTela(Controlador controlador) throws HeadlessException, RemoteException, UnusableEntryException, TransactionException, InterruptedException {
 			    String nomeUsuario = "";
 

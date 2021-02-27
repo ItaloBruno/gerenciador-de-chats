@@ -1,4 +1,5 @@
 package View;
+import Tuplas.TuplaMensagem;
 import Tuplas.TuplaUsuario;
 import net.jini.core.entry.UnusableEntryException;
 import net.jini.core.transaction.TransactionException;
@@ -15,6 +16,7 @@ import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
 
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 
 public class TelaUsuario {
 	private String nomeUsuario;
@@ -66,7 +68,7 @@ public class TelaUsuario {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				txtHistorico.setText(mensagemDigitada);
+				txtHistorico.setText(nomeUsuario + " : " + mensagemDigitada);
 			}
 		});
 		btnEnviar.setBounds(465, 305, 100, 27);
@@ -118,6 +120,9 @@ public class TelaUsuario {
 		}
 		listaDeUsuarios.setBounds(30, 50, 133, 237);
 		frameTelaUsuario.getContentPane().add(listaDeUsuarios);
+		lblMeuNome = new JLabel(nomeUsuario);
+		lblMeuNome.setBounds(175, 8, 115, 37);
+		frameTelaUsuario.getContentPane().add(lblMeuNome);
 	}
 
 	private int obterIndiceDaListaDeUsuarios(java.awt.event.MouseEvent evento){
@@ -126,6 +131,12 @@ public class TelaUsuario {
         return indiceEncontrado;
     }
 	
+	public void AtualizarChat(TuplaMensagem mensagem) {
+		String novoTexto = this.txtHistorico.getText(); 
+		novoTexto = novoTexto + "\n" + mensagem.remetente +" : " + mensagem.conteudo;
+		this.txtHistorico.setText(novoTexto);
+	}
+	
 	public JFrame frameTelaUsuario;
 	private JTextField textMensagemParaEnviar;
 	private JButton btnEnviar;
@@ -133,4 +144,5 @@ public class TelaUsuario {
 	private JButton btnLimpar;
 	private JTextArea txtHistorico;
 	private JList listaDeUsuarios;
+	private JLabel lblMeuNome;
 }
