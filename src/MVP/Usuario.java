@@ -24,6 +24,11 @@ public class Usuario {
 		this.setarNomeDoDestinatario("");
 		this.controladora.GravarUsuarioNoEspaco(obterMeuNomeDeUsuario());
 		
+		System.out.println("\n=============================================");
+		System.out.println("Meu nome de usuário: " + obterMeuNomeDeUsuario());
+		System.out.println("=============================================");
+
+		
 		this.EnviarMensagem();
 		this.ReceberMensagem();
 	}
@@ -55,14 +60,17 @@ public class Usuario {
 	
     private void ReceberMensagem(){
         new Thread(() -> {
-            System.out.println("\nRodando a thread de recepção de mensagens\n");
+            System.out.println("Rodando a thread de recepção de mensagens");
             while (true){
                 try {
                 	TuplaMensagem mensagemRecebida = controladora.LerMensagemDoEspaco(this.obterMeuNomeDeUsuario());
                 	if (mensagemRecebida != null) {
-                      System.out.println("\nDe: " + mensagemRecebida.remetente);
+            		  System.out.println("\n==========================================");
+            		  System.out.println("Mensagem recebida");
+                      System.out.println("De: " + mensagemRecebida.remetente);
                       System.out.println("Para: " + mensagemRecebida.destinatario);
                       System.out.println("Conteúdo: " + mensagemRecebida.conteudo);
+            		  System.out.println("==========================================\n");
                 	}
                 } catch (TransactionException e) {
                     e.printStackTrace();
@@ -79,13 +87,13 @@ public class Usuario {
     
     private void EnviarMensagem() {
         new Thread(() -> {
-            System.out.println("\nRodando a thread de envio de mensagens");
+            System.out.println("Rodando a thread de envio de mensagens");
             Scanner scanner = new Scanner(System.in);
             while (true){
                 try {
                 	String destinatario = "";
             		do {
-            			System.out.print("\n\nDigite o destinatário da mensagem: ");
+            			System.out.print("\nDigite o destinatário da mensagem: ");
                         destinatario = scanner.nextLine();
             	    } while ("!!!@@@###$$$!@#$".equals(destinatario) || destinatario.isEmpty());
             		
@@ -101,10 +109,8 @@ public class Usuario {
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 } catch (UnusableEntryException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
             }

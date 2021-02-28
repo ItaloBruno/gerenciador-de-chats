@@ -45,41 +45,13 @@ public class Controlador {
 	    
         TuplaUsuario usuario = (TuplaUsuario) this.conexaoComOEspaco.read(modelo, null, 100);
         if (usuario != null) {
-            System.out.println("\nO usuário " + nomeUsuario + " já existe! Tente um outro nome!\n");
+            System.out.println("\nO usuário " + nomeUsuario + " já existe! Tente um outro nome!");
         	return true;
         }else {
             System.out.println("\nEsse usuário ainda não existe! Pode criar um usuário com esse nome ;)");
             return false;
         }
 	}
-	
-//	public String[] ListarUsuariosQueJaExistem() throws RemoteException, UnusableEntryException, TransactionException, InterruptedException {
-//		// o retorno tem que ser um array de strings
-//		// tem que pegar todos os usuário da tupla, armazenar numa lista e
-//		// depois preciso devolver todos para o espaço de tupla
-//		List lista = new ArrayList();
-//		String[] strings = (String[]) lista.toArray (new String[lista.size()]);
-//		ArrayList<TuplaUsuario> usuariosExistentes= new ArrayList<TuplaUsuario>();
-//		ArrayList<String> nomes = new ArrayList<String>();
-//		boolean terminou = false;
-//		while (!terminou) {
-//			TuplaUsuario usuario = LerUsuariosDoEspaco();
-//			if (usuario != null) {
-//				usuariosExistentes.add(usuario);
-//				nomes.add(usuario.nome);
-//			}else {
-//				terminou = true;
-//			}
-//		}
-//		
-//		for (TuplaUsuario usuarioParaAdicionar : usuariosExistentes) {
-//			GravarUsuarioNoEspaco(usuarioParaAdicionar.nome);
-//		}
-//		String[] nomesParaRetornar = new String[nomes.size()];
-//		nomes.toArray(nomesParaRetornar);
-//		return nomesParaRetornar;
-//		return new String[] {"maria", "xuxa"};
-//	}
 	
 	public void GravarUsuarioNoEspaco(String nomeUsuario) throws RemoteException, UnusableEntryException, TransactionException, InterruptedException {
 		TuplaUsuario modelo = new TuplaUsuario();
@@ -114,10 +86,8 @@ public class Controlador {
 		TuplaMensagem modelo = new TuplaMensagem();
 	    
 	    modelo.destinatario = nomeUsuario;
-	           
 
         TuplaMensagem mensagem = (TuplaMensagem) this.conexaoComOEspaco.take(modelo, null, 10000);
-
         if (mensagem != null) {
             return mensagem;
         }
@@ -126,10 +96,10 @@ public class Controlador {
     
     public TuplaEspiao LerMensagemParaOEspiaoDoEspaco() throws TransactionException, UnusableEntryException, RemoteException, InterruptedException {
     	TuplaEspiao modelo = new TuplaEspiao();
-	    modelo.nome = "espiao";
+	    
+    	modelo.nome = "espiao";
 	           
 	    TuplaEspiao mensagem = (TuplaEspiao) this.conexaoComOEspaco.take(modelo, null, 10000);
-
         if (mensagem != null) {
             return mensagem;
         }

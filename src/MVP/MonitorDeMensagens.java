@@ -32,7 +32,7 @@ public class MonitorDeMensagens {
             System.out.println("\nRodando a thread de recepção de mensagens do serviço de mensageria\n");
             while (true){
             	try {
-					this.controladora.LerMensagem(this.canal);;
+					this.controladora.LerMensagemDoTopico(this.canal);;
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

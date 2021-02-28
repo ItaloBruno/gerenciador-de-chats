@@ -11,42 +11,42 @@ import com.rabbitmq.client.Channel;
 
 
 public class ControladorMensageria {
-	private  final  static String QUEUE_NAME = "monitoramento" ;
+	private final static String NOME_DA_FILA = "monitoramento";
+
 	
 	public ControladorMensageria() {}
 	
 	public void EscreverMensagemNoTopico(String remetente, String destinatario, String conteudo) throws IOException, TimeoutException {
-		ConnectionFactory factory = new ConnectionFactory();
-		factory.setUsername("guest");
-		factory.setPassword("guest");
-		factory.setHost("localhost");
+		ConnectionFactory fabrica = new ConnectionFactory();
+		fabrica.setUsername("guest");
+		fabrica.setPassword("guest");
+		fabrica.setHost("localhost");
 		
 		String mensagem = "\nRemetente: " + remetente + ".\nDestinatário: " + destinatario + ".\nConteúdo da mensagem: " + conteudo;
 		
-		try (Connection connection = factory.newConnection()) {
-		  Channel channel = connection.createChannel();
-		  channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-		  channel.basicPublish("", QUEUE_NAME, null, mensagem.getBytes("UTF-8"));
+		try (Connection conexao = fabrica.newConnection()) {
+		  Channel canal = conexao.createChannel();
+		  canal.queueDeclare(NOME_DA_FILA, false, false, false, null);
+		  canal.basicPublish("", NOME_DA_FILA, null, mensagem.getBytes("UTF-8"));
 		}
-		
-	}
+    }
 
 	public Channel ConectarComOTopico() throws IOException, TimeoutException {
-	    ConnectionFactory factory = new ConnectionFactory();
-	    factory.setHost("localhost");
-	    Connection connection = factory.newConnection();
-	    Channel channel = connection.createChannel();
-	    channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+	    ConnectionFactory fabrica = new ConnectionFactory();
+	    fabrica.setHost("localhost");
+	    Connection conexao = fabrica.newConnection();
+	    Channel canal = conexao.createChannel();
+	    canal.queueDeclare(NOME_DA_FILA, false, false, false, null);
 	    System.out.println("Esperando por mensagens....");
 	    
-	    return channel;
+	    return canal;
 	}
 	
-	public void LerMensagem(Channel channel) throws IOException {
+	public void LerMensagemDoTopico(Channel canal) throws IOException {
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
-            String message = new String(delivery.getBody(), "UTF-8");
-            System.out.println(" [x] Received '" + message + "'");
+            String mensagemRecebida = new String(delivery.getBody(), "UTF-8");
+            System.out.println("\n[x] Mensagem recebida: '" + mensagemRecebida + "'");
         };
-        channel.basicConsume(QUEUE_NAME, true, deliverCallback, consumerTag -> { });
+        canal.basicConsume(NOME_DA_FILA, true, deliverCallback, consumerTag -> { });
 	}
 }
