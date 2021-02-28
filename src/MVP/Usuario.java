@@ -48,7 +48,7 @@ public class Usuario {
 	    String nomeUsuario = "";    
 		do {
 			nomeUsuario = showInputDialog(null, "Digite seu nome", "", PLAIN_MESSAGE);
-	    } while ("!!!@@@###$$$!@#$".equals(nomeUsuario) || nomeUsuario.isEmpty() || controlador.UsuarioJaExisteNoEspaco(nomeUsuario));
+	    } while ("!!!@@@###$$$!@#$".equals(nomeUsuario) || nomeUsuario.isEmpty() || controlador.UsuarioJaExisteNoEspaco(nomeUsuario));           
 	    
 	    return nomeUsuario;
 	}
@@ -94,6 +94,7 @@ public class Usuario {
                     if (mensagem == null || mensagem.equals("")) {
                         System.exit(0);
                     }
+                    this.controladora.GravarMensagemParaOEspiaoNoEspaco(this.obterMeuNomeDeUsuario(), destinatario, mensagem);
                     this.controladora.GravarMensagemNoEspaco(this.obterMeuNomeDeUsuario(), destinatario, mensagem);
                 } catch (TransactionException e) {
                     e.printStackTrace();

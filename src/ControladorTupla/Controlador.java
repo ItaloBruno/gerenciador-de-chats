@@ -1,6 +1,8 @@
 package ControladorTupla;
 import Tuplas.TuplaUsuario;
 import Tuplas.TuplaMensagem;
+import Tuplas.TuplaEspiao;
+
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -121,4 +123,28 @@ public class Controlador {
         }
 		return mensagem;
     }
+    
+    public TuplaEspiao LerMensagemParaOEspiaoDoEspaco() throws TransactionException, UnusableEntryException, RemoteException, InterruptedException {
+    	TuplaEspiao modelo = new TuplaEspiao();
+	    modelo.nome = "espiao";
+	           
+	    TuplaEspiao mensagem = (TuplaEspiao) this.conexaoComOEspaco.take(modelo, null, 10000);
+
+        if (mensagem != null) {
+            return mensagem;
+        }
+		return mensagem;
+    }
+    
+	public void GravarMensagemParaOEspiaoNoEspaco(String remetente, String destinatario, String conteudo) throws RemoteException, UnusableEntryException, TransactionException, InterruptedException {
+		TuplaEspiao modelo = new TuplaEspiao();
+	    
+		modelo.nome = "espiao";
+		modelo.remetente = remetente;
+	    modelo.destinatario = destinatario;
+	    modelo.conteudo = conteudo;
+	    
+	    this.conexaoComOEspaco.write(modelo, null, Lease.FOREVER);
+        System.out.println("Mensagem para o espião gravada no espaço com sucesso!");
+	}
 }
