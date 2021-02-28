@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import ControladorTupla.Controlador;
+import Mensageria.ServicoMensageria;
 import Tuplas.TuplaEspiao;
 import net.jini.core.entry.UnusableEntryException;
 import net.jini.core.transaction.TransactionException;
@@ -38,7 +39,7 @@ public class Espiao {
         	System.out.println("\nAdicione a palavra que você que monitorar: ");
         	palavra = (String) scanner.nextLine();
 
-        	if (!palavra.isEmpty() && !palavra.equals("iniciar monitoramento")) {
+        	if (!palavra.isEmpty()){
              	System.out.println("\nPalavra " + palavra + " adicionada");
         		 this.palavrasMonitoradas.add(palavra);
         	 }else {
@@ -67,18 +68,11 @@ public class Espiao {
                       if (this.MensagemTemPalavraMonitorada(mensagemRecebida.conteudo)){
                     	  System.out.println("TEM PALAVRA A SER MONITORADA");
                     	  
-            		      Registry registry = LocateRegistry.getRegistry(20394); 
-            		 
-            		      // Looking up the registry for the remote object 
-            		      
-            		      InverterItf stub = (InverterItf) registry.lookup("Inverterltf");
+            		      Registry registrador = LocateRegistry.getRegistry(20394);           		      
+            		      ServicoMensageria servidorRemoto = (ServicoMensageria) registrador.lookup("servidor-de-mensageria");
             		 
             		      System.out.println("Objeto Localizado!");
-            		      String resultado = stub.inverter(mensagemRecebida.conteudo);
-            		      stub.EnviarMensagemProMiddlewareDeMensagem(mensagemRecebida.conteudo);
-
-            		      System.out.println(resultado);
-            		      
+            		      servidorRemoto.EnviarMensagemProMiddlewareDeMensagem(mensagemRecebida.remetente, mensagemRecebida.destinatario, mensagemRecebida.conteudo);            		      
                       }
                 	}
                 } catch (TransactionException e) {

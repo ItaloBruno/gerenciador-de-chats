@@ -25,14 +25,15 @@ public class TelaUsuario {
 	
 	/**
 	 * Create the application.
+	 * @throws TransactionException 
 	 */
-	public TelaUsuario(String nomeDoUsuario, Controlador controlador) {
+	public TelaUsuario(String nomeDoUsuario, Controlador controlador) throws TransactionException {
 		this.nomeUsuario = nomeDoUsuario;
 		this.controlador = controlador;
 		incializarComponentesDaTela();
 	}
 	
-	private void incializarComponentesDaTela() {
+	private void incializarComponentesDaTela() throws TransactionException {
 		frameTelaUsuario = new JFrame();
 		frameTelaUsuario.setBounds(100, 100, 594, 444);
 		frameTelaUsuario.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -104,20 +105,15 @@ public class TelaUsuario {
 	            System.out.println(destinatario);
 			}
 		});
-		try {
-			listaDeUsuarios.setModel(new AbstractListModel() {
-				String[] values = controlador.ListarUsuariosQueJaExistem();
-				public int getSize() {
-					return values.length;
-				}
-				public Object getElementAt(int index) {
-					return values[index];
-				}
-			});
-		} catch (RemoteException | UnusableEntryException | TransactionException | InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		listaDeUsuarios.setModel(new AbstractListModel() {
+			String[] values = {"italo"};
+			public int getSize() {
+				return values.length;
+			}
+			public Object getElementAt(int index) {
+				return values[index];
+			}
+		});
 		listaDeUsuarios.setBounds(30, 50, 133, 237);
 		frameTelaUsuario.getContentPane().add(listaDeUsuarios);
 		lblMeuNome = new JLabel(nomeUsuario);

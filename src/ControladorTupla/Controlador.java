@@ -53,10 +53,10 @@ public class Controlador {
         }
 	}
 	
-	public String[] ListarUsuariosQueJaExistem() throws RemoteException, UnusableEntryException, TransactionException, InterruptedException {
-		// o retorno tem que ser um array de strings
-		// tem que pegar todos os usuário da tupla, armazenar numa lista e
-		// depois preciso devolver todos para o espaço de tupla
+//	public String[] ListarUsuariosQueJaExistem() throws RemoteException, UnusableEntryException, TransactionException, InterruptedException {
+//		// o retorno tem que ser um array de strings
+//		// tem que pegar todos os usuário da tupla, armazenar numa lista e
+//		// depois preciso devolver todos para o espaço de tupla
 //		List lista = new ArrayList();
 //		String[] strings = (String[]) lista.toArray (new String[lista.size()]);
 //		ArrayList<TuplaUsuario> usuariosExistentes= new ArrayList<TuplaUsuario>();
@@ -78,8 +78,8 @@ public class Controlador {
 //		String[] nomesParaRetornar = new String[nomes.size()];
 //		nomes.toArray(nomesParaRetornar);
 //		return nomesParaRetornar;
-		return new String[] {"maria", "xuxa"};
-	}
+//		return new String[] {"maria", "xuxa"};
+//	}
 	
 	public void GravarUsuarioNoEspaco(String nomeUsuario) throws RemoteException, UnusableEntryException, TransactionException, InterruptedException {
 		TuplaUsuario modelo = new TuplaUsuario();
