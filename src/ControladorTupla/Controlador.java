@@ -43,10 +43,10 @@ public class Controlador {
 	    
         TuplaUsuario usuario = (TuplaUsuario) this.conexaoComOEspaco.read(modelo, null, 100);
         if (usuario != null) {
-            System.out.println("\nO usuário " + nomeUsuario + " já existe\n");
+            System.out.println("\nO usuário " + nomeUsuario + " já existe! Tente um outro nome!\n");
         	return true;
         }else {
-            System.out.println("\nEsse usuário ainda não existe");
+            System.out.println("\nEsse usuário ainda não existe! Pode criar um usuário com esse nome ;)");
             return false;
         }
 	}
@@ -83,7 +83,7 @@ public class Controlador {
 		TuplaUsuario modelo = new TuplaUsuario();
 	    modelo.nome = nomeUsuario;
 	    this.conexaoComOEspaco.write(modelo, null, Lease.FOREVER);
-        System.out.println("Usuário gravado no espaço com sucesso!");
+        System.out.println("Usuário " + nomeUsuario + " gravado no espaço com sucesso!");
 	}
 	
     public TuplaUsuario LerUsuariosDoEspaco() throws TransactionException, UnusableEntryException, RemoteException, InterruptedException {
@@ -105,20 +105,18 @@ public class Controlador {
 	    modelo.conteudo = conteudo;
 	    
 	    this.conexaoComOEspaco.write(modelo, null, Lease.FOREVER);
-	    System.out.println(remetente + " > " + destinatario + " > " + conteudo);
         System.out.println("Mensagem gravada no espaço com sucesso!");
 	}
 	
-    public TuplaMensagem LerMensagemDoEspaco(String NomeUsuario) throws TransactionException, UnusableEntryException, RemoteException, InterruptedException {
+    public TuplaMensagem LerMensagemDoEspaco(String nomeUsuario) throws TransactionException, UnusableEntryException, RemoteException, InterruptedException {
 		TuplaMensagem modelo = new TuplaMensagem();
 	    
-	    modelo.destinatario = NomeUsuario;
+	    modelo.destinatario = nomeUsuario;
 	           
 
         TuplaMensagem mensagem = (TuplaMensagem) this.conexaoComOEspaco.take(modelo, null, 10000);
 
         if (mensagem != null) {
-            System.out.println("\r\n" + mensagem.remetente + ": " + mensagem.conteudo + "\r\n");
             return mensagem;
         }
 		return mensagem;
